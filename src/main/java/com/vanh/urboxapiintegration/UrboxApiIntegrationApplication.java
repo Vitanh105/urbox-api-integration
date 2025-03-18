@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class UrboxApiIntegrationApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(UrboxApiIntegrationApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(UrboxApiIntegrationApplication.class, args);
+    }
 
 }

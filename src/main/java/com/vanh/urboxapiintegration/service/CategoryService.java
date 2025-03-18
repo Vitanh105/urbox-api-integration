@@ -3,7 +3,6 @@ package com.vanh.urboxapiintegration.service;
 import com.vanh.urboxapiintegration.dto.category.CategoryRequest;
 import com.vanh.urboxapiintegration.dto.category.CategoryResponse;
 import com.vanh.urboxapiintegration.model.Category;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -16,9 +15,6 @@ import java.util.stream.Collectors;
 @Service
 public class CategoryService {
     private final WebClient webClient;
-
-    @Value("${api.lang}")
-    private String lang;
 
     public CategoryService(WebClient webClient) {
         this.webClient = webClient;
