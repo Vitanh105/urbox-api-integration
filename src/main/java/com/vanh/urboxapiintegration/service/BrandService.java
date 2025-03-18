@@ -1,85 +1,81 @@
 package com.vanh.urboxapiintegration.service;
 
-import com.vanh.urboxapiintegration.dto.brand.BrandRequest;
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import com.vanh.urboxapiintegration.dto.brand.BrandResponse;
-import com.vanh.urboxapiintegration.model.Brand;
-import com.vanh.urboxapiintegration.model.ParentCategory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.servlet.View;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class BrandService {
+
+    private static final Logger logger = LoggerFactory.getLogger(BrandService.class);
+
     private final WebClient webClient;
 
-    @Value("${api.per-page}")
-    private int per_page;
+    @Value("${base-url}")
+    private String baseUrl;
+
+    // Cache để lưu parent_cat_id
+    private final Cache<String, Set<String>> parentCatIdCache = Caffeine.newBuilder()
+            .maximumSize(1000)
+            .build();
 
     public BrandService(WebClient webClient) {
         this.webClient = webClient;
     }
 
-    public Mono<BrandResponse> getBrands(BrandRequest brandRequest) {
-        MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
-        queryParams.add("per_page", String.valueOf(brandRequest.getPer_page()));
-        queryParams.add("page_no", String.valueOf(brandRequest.getPage_no()));
-        if (brandRequest.getCat_id() != null) {
-            queryParams.add("cat_id", brandRequest.getCat_id());
+    public Mono<BrandResponse> getBrands(String cat_id, Integer per_page, Integer page_no) {
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        if (cat_id != null) {
+            // Xem trong cache có mã danh mục cha hay không trước
+            Set<String> cachedParentCatIds = parentCatIdCache.getIfPresent("parent_cat_id");
+            if (cachedParentCatIds != null && !cachedParentCatIds.contains(cat_id)) {
+                logger.debug("cat_id {} not found in cache -> call API", cat_id);
+            } else {
+                params.add("cat_id", cat_id);
+            }
         }
+        if (per_page != null) params.add("per_page", per_page.toString());
+        if (page_no != null) params.add("page_no", page_no.toString());
+
+        logger.debug("Sending request to {} with params: {}", baseUrl + "/4.0/gift/brand", params);
 
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/4.0/gift/brand")
-                        .queryParams(queryParams)
+                        .queryParams(params)
                         .build())
                 .retrieve()
                 .bodyToMono(BrandResponse.class)
-                .map(brandResponse -> {
-                    if (brandResponse.getStatus() != 200 || brandResponse.getDone() != 1) {
-                        throw new RuntimeException("API error:" + brandResponse.getMsg());
+                .doOnSuccess(response -> {
+                    logger.debug("Received response: done={}, status={}, data={}", response.getDone(), response.getStatus(), response.getData());
+                    if (response.getData() != null && response.getData().getItems() != null) {
+                        Set<String> parentCatId = parentCatIdCache.getIfPresent("parent_cat_id");
+                        if (parentCatId == null) parentCatId = new HashSet<>();
+                        Set<String> finalParentCatId = parentCatId;
+                        response.getData().getItems().forEach(item -> finalParentCatId.add(item.getParent_cat_id()));
+                        parentCatIdCache.put("parent_cat_id", parentCatId);
                     }
-                    //Lấy ra danh sách thương hiệu, có thể cần dùng sau
-                    Set<Brand> brands = brandResponse.getData().getItems().stream().map(item -> {
-                        Brand brand = new Brand();
-                        brand.setBanner(item.getBanner());
-                        brand.setDescription(item.getDescription());
-                        brand.setImages(item.getImages());
-                        brand.setId(item.getId());
-                        brand.setCat_id(item.getCat_id());
-                        brand.setTitle(item.getTitle());
-                        brand.setGift_count(item.getGift_count());
-                        brand.setCat_title(item.getCat_title());
-                        brand.setParent_cat_id(item.getParent_cat_id());
-                        return brand;
-                    }).collect(Collectors.toSet());
-                    return brandResponse;
-                });
+                })
+                .doOnError(error -> logger.error("Error calling API: {}", error.getMessage()));
     }
 
-    //Lấy danh sách mã danh mục cha
-    public Mono<List<ParentCategory>> getParentCategory(int page_no) {
-        BrandRequest brandRequest = new BrandRequest();
-        brandRequest.setPer_page(per_page);
-        brandRequest.setPage_no(page_no);
-
-        return getBrands(brandRequest)
-                .map(response -> {
-                    // Thu thập danh sách parent_cat_id
-                    Set<ParentCategory> categories = response.getData().getItems().stream()
-                            .map(item -> {
-                                ParentCategory parentCategory = new ParentCategory();
-                                parentCategory.setParent_cat_id(item.getParent_cat_id());
-                                return parentCategory;
-                            })
-                            .collect(Collectors.toSet());
-                    return List.copyOf(categories);
-                });
+    // Phương thức để lấy danh sách parent_cat_id từ cache
+    public Set<String> getCachedParentCatIds() {
+        return parentCatIdCache.getIfPresent("parent_cat_id");
     }
 }
