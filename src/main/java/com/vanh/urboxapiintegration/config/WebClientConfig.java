@@ -10,9 +10,8 @@ public class WebClientConfig {
     @Bean
     public WebClient webClient() {
         return WebClient.builder()
-                .baseUrl("https://sandapi.urbox.dev")
-                .defaultHeader("app_secret", "your-app-secret") //chưa biết
-                .defaultHeader("app_id", "your-app-id") //chưa biết
+                .defaultHeader("Content-Type", "application/json")
+                .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(16 * 1024 * 1024))
                 .build();
     }
 }
