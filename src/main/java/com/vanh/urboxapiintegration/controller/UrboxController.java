@@ -1,6 +1,6 @@
 package com.vanh.urboxapiintegration.controller;
 
-import com.vanh.urboxapiintegration.dto.*;
+import com.vanh.urboxapiintegration.dto.response.*;
 import com.vanh.urboxapiintegration.service.BrandService;
 import com.vanh.urboxapiintegration.service.CategoryService;
 import com.vanh.urboxapiintegration.service.GiftDetailService;

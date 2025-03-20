@@ -1,7 +1,7 @@
 package com.vanh.urboxapiintegration.service;
 
-import com.vanh.urboxapiintegration.dto.GiftDetailResponse;
-import com.vanh.urboxapiintegration.dto.UrboxResponse;
+import com.vanh.urboxapiintegration.dto.response.GiftDetailResponse;
+import com.vanh.urboxapiintegration.dto.response.UrboxResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;

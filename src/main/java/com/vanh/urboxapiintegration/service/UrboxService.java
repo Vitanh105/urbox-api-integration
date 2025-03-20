@@ -1,6 +1,6 @@
 package com.vanh.urboxapiintegration.service;
 
-import com.vanh.urboxapiintegration.dto.UrboxResponse;
+import com.vanh.urboxapiintegration.dto.response.UrboxResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;

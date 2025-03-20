@@ -1,4 +1,4 @@
-package com.vanh.urboxapiintegration.dto;
+package com.vanh.urboxapiintegration.dto.response;
 
 import lombok.Data;
 
