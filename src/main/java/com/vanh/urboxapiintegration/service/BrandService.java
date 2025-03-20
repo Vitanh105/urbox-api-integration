@@ -21,6 +21,6 @@ public class BrandService extends UrboxService {
         if (cat_id != null) params.put("cat_id", cat_id);
         if (per_page != null) params.put("per_page", per_page);
         if (page_no != null) params.put("page_no", page_no);
-        return callUrboxApi("/4.0/gift/brand", params, BrandResponse.class);
+        return callGetApi("/4.0/gift/brand", params, BrandResponse.class);
     }
 }

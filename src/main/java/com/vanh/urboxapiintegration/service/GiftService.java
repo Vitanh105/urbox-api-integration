@@ -32,6 +32,6 @@ public class GiftService extends UrboxService {
         if (title != null) params.put("title", title);
         if (per_page != null) params.put("per_page", per_page);
         if (page_no != null) params.put("page_no", page_no);
-        return callUrboxApi("/4.0/gift/lists", params, GiftResponse.class);
+        return callGetApi("/4.0/gift/lists", params, GiftResponse.class);
     }
 }

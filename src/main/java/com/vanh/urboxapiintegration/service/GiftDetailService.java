@@ -20,6 +20,6 @@ public class GiftDetailService extends UrboxService {
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         if (lang != null) params.put("lang", lang);
-        return callUrboxApi("/4.0/gift/detail", params, GiftDetailResponse.class);
+        return callGetApi("/4.0/gift/detail", params, GiftDetailResponse.class);
     }
 }

@@ -19,6 +19,6 @@ public class CategoryService extends UrboxService {
         Map<String, Object> params = new HashMap<>();
         if (parent_id != null) params.put("parent_id", parent_id);
         if (lang != null) params.put("lang", lang);
-        return callUrboxApi("/2.0/category/catbyparent", params, CategoryResponse.class);
+        return callGetApi("/2.0/category/catbyparent", params, CategoryResponse.class);
     }
 }

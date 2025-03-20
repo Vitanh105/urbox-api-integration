@@ -13,21 +13,21 @@ import java.util.Map;
 @Service
 public class UrboxService {
     @Value("${app.secret}")
-    private String app_secret;
+    protected String app_secret;
 
     @Value("${app.id}")
-    private int app_id;
+    protected int app_id;
 
     @Value("${base.url}")
-    private String base_url;
+    protected String base_url;
 
-    private final WebClient webClient;
+    protected final WebClient webClient;
 
     public UrboxService(WebClient webClient) {
         this.webClient = webClient;
     }
 
-    public <T> Mono<UrboxResponse<T>> callUrboxApi(String endpoint, Map<String, Object> params, Class<T> responseType) {
+    public <T> Mono<UrboxResponse<T>> callGetApi(String endpoint, Map<String, Object> params, Class<T> responseType) {
         return webClient.get()
                 .uri(uriBuilder -> {
                     uriBuilder.path(endpoint)
@@ -43,5 +43,17 @@ public class UrboxService {
                 }).timeout(Duration.ofSeconds(60)).onErrorResume(throwable -> {
                     return Mono.just(new UrboxResponse<>());
                 });
+    }
+
+    public <T, R> Mono<UrboxResponse<R>> callPostApi(String endpoint, T requestBody, String signature, Class<R> responseType) {
+        return webClient.post()
+                .uri(base_url + endpoint)
+                .header("Content-Type", "application/json")
+                .header("Signature", signature)
+                .bodyValue(requestBody)
+                .retrieve()
+                .bodyToMono(new ParameterizedTypeReference<UrboxResponse<R>>() {})
+                .timeout(Duration.ofSeconds(60))
+                .onErrorResume(throwable -> Mono.just(new UrboxResponse<>()));
     }
 }

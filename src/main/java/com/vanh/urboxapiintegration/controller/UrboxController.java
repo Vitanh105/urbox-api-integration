@@ -1,14 +1,9 @@
 package com.vanh.urboxapiintegration.controller;
 
+import com.vanh.urboxapiintegration.dto.request.CartPayVoucherRequest;
 import com.vanh.urboxapiintegration.dto.response.*;
-import com.vanh.urboxapiintegration.service.BrandService;
-import com.vanh.urboxapiintegration.service.CategoryService;
-import com.vanh.urboxapiintegration.service.GiftDetailService;
-import com.vanh.urboxapiintegration.service.GiftService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.vanh.urboxapiintegration.service.*;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -19,13 +14,15 @@ public class UrboxController {
     private final CategoryService categoryService;
     private final GiftService giftService;
     private final GiftDetailService giftDetailService;
+    private final CartPayVoucherService cartPayVoucherService;
 
 
-    public UrboxController(BrandService brandService, CategoryService categoryService, GiftService giftService, GiftDetailService giftDetailService) {
+    public UrboxController(BrandService brandService, CategoryService categoryService, GiftService giftService, GiftDetailService giftDetailService, CartPayVoucherService cartPayVoucherService) {
         this.brandService = brandService;
         this.categoryService = categoryService;
         this.giftService = giftService;
         this.giftDetailService = giftDetailService;
+        this.cartPayVoucherService = cartPayVoucherService;
     }
 
     @GetMapping("/brand")
@@ -53,9 +50,14 @@ public class UrboxController {
         return giftService.getGiftList(cat_id, brand_id, field, lang, stock, title, per_page, page_no);
     }
 
-    @GetMapping("/gift-detail")
+    @GetMapping("/gift/detail")
     public Mono<UrboxResponse<GiftDetailResponse>> getGiftDetail(@RequestParam String id,
                                                                  @RequestParam(required = false) String lang) {
         return giftDetailService.getGiftDetail(id, lang);
+    }
+
+    @PostMapping("/cart/pay-voucher")
+    public Mono<UrboxResponse<CartPayVoucherResponse>> getCartPayVoucher(@RequestBody CartPayVoucherRequest request) {
+        return cartPayVoucherService.getCartPayVoucher(request);
     }
 }
