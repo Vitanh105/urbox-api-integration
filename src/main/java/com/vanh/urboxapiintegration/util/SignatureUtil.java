@@ -27,10 +27,14 @@ public class SignatureUtil {
 
     @SneakyThrows
     public String generateSignature(Map<String, Object> data, String privateKeyPath) {
+        //Theo yêu cầu bảo mật
+        //Sử dụng ksort (sắp xếp theo key với dạng alphabet)
         TreeMap<String, Object> sortedData = new TreeMap<>(data);
 
+        //Sử dụng json_encode:
         String jsonData = objectMapper.writeValueAsString(sortedData);
 
+        //Tạo chữ ký bằng SHA256withRSA
         PrivateKey privateKey = loadPrivateKey(privateKeyPath);;
         Signature privateSignature = Signature.getInstance("SHA256withRSA");
         privateSignature.initSign(privateKey);
