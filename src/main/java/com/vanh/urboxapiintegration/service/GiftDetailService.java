@@ -1,6 +1,6 @@
 package com.vanh.urboxapiintegration.service;
 
-import com.vanh.urboxapiintegration.dto.CategoryResponse;
+import com.vanh.urboxapiintegration.dto.GiftDetailResponse;
 import com.vanh.urboxapiintegration.dto.UrboxResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -10,15 +10,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class CategoryService extends UrboxService {
-    public CategoryService(WebClient webClient) {
+public class GiftDetailService extends UrboxService {
+    public GiftDetailService(WebClient webClient) {
         super(webClient);
     }
 
-    public Mono<UrboxResponse<CategoryResponse>> getCategory(Integer parent_id, String lang) {
+    public Mono<UrboxResponse<GiftDetailResponse>> getGiftDetail(String id,
+                                                                 String lang) {
         Map<String, Object> params = new HashMap<>();
-        if (parent_id != null) params.put("parent_id", parent_id);
+        params.put("id", id);
         if (lang != null) params.put("lang", lang);
-        return callUrboxApi("/2.0/category/catbyparent", params, CategoryResponse.class);
+        return callUrboxApi("/4.0/gift/detail", params, GiftDetailResponse.class);
     }
 }

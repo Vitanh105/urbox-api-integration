@@ -46,6 +46,8 @@ public class GiftResponse {
 
     @Data
     public static class Office {
+        private String id;
+        private String store_id;
         private String brand_id;
         private String city_id;
         private String district_id;
@@ -54,15 +56,21 @@ public class GiftResponse {
         private String code;
         private String address;
         private String address_en;
+        private String address2;
+        private String title_city;
+        private String title_district;
+        private String title_ward;
+        private String title_street;
         private String number;
+        private String image;
         private String phone;
+        private String sort;
         private String latitude;
         private String longitude;
         private String geo;
         private String isApply;
-        private String id;
+        private String created;
         private String brand_img_src;
         private String brand_title;
-        private String title_city;
     }
 }

@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class BrandService extends UrboxService{
+public class BrandService extends UrboxService {
 
     public BrandService(WebClient webClient) {
         super(webClient);
