@@ -16,7 +16,7 @@ public class BrandService extends UrboxService{
         super(webClient);
     }
 
-    public Mono<UrboxResponse<BrandResponse>> getBrand(String cat_id, Integer per_page, Integer page_no) {
+    public Mono<UrboxResponse<BrandResponse>> getBrand(Integer cat_id, Integer per_page, Integer page_no) {
         Map<String, Object> params = new HashMap<>();
         if (cat_id != null) params.put("cat_id", cat_id);
         if (per_page != null) params.put("per_page", per_page);

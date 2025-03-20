@@ -16,7 +16,7 @@ public class UrboxService {
     private String app_secret;
 
     @Value("${app.id}")
-    private String app_id;
+    private int app_id;
 
     @Value("${base.url}")
     private String base_url;
