@@ -64,21 +64,21 @@ public class UrboxController {
     }
 
     //Tạo yêu cầu đổi quà đến UrBox - Quà eVoucher
-    @PostMapping("/cart/cartPayVoucher/evoucher")
+    @PostMapping("/cart/cartPayVoucher/eVoucher")
     public Mono<UrboxResponse<CartPayVoucherEVoucherResponse>> cartPayVoucherEVoucher(
             @Valid @RequestBody CartPayVoucherEVoucherRequest request) {
         return cartPayVoucherService.cartPayVoucherEVoucher(request);
     }
 
     //Tạo yêu cầu đổi quà đến UrBox - Quà vật lý - Cách 1: Đối tác gửi yêu cầu đặt hàng cho UrBox
-    @PostMapping("/cart/cartPayVoucher/voucherm1")
+    @PostMapping("/cart/cartPayVoucher/voucherM1")
     public Mono<UrboxResponse<CartPayVoucherM1Response>> cartPayVoucherPhysicalMethod1(
             @Valid @RequestBody CartPayVoucherM1Request request) {
         return cartPayVoucherService.cartPayVoucherPhysicalMethod1(request);
     }
 
     //Tạo yêu cầu đổi quà tới UrBox - Quà vật lý - Cách 2: Đối tác gửi thông tin giao nhận cho UrBox
-    @PostMapping("/cart/cartPayVoucher/voucherm2")
+    @PostMapping("/cart/cartPayVoucher/voucherM2")
     public Mono<UrboxResponse<CartPayVoucherM2Response>> cartPayVoucherPhysicalMethod2(
             @Valid @RequestBody CartPayVoucherM2Request request) {
         return cartPayVoucherService.cartPayVoucherPhysicalMethod2(request);

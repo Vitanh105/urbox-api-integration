@@ -50,7 +50,6 @@ public class CartPayVoucherService extends UrboxService {
         // Tạo chữ ký
         String signature = signatureUtil.generateSignature(dataToSign, privateKeyPath);
 
-        // Gọi API
         return callPostApi("/2.0/cart/cartPayVoucher", request, signature, CartPayVoucherEVoucherResponse.class);
     }
 
@@ -59,7 +58,6 @@ public class CartPayVoucherService extends UrboxService {
         request.setApp_secret(app_secret);
         request.setApp_id(app_id);
 
-        // Tạo dữ liệu để ký
         Map<String, Object> dataToSign = new HashMap<>();
         dataToSign.put("app_secret", request.getApp_secret());
         dataToSign.put("app_id", request.getApp_id());
@@ -69,10 +67,8 @@ public class CartPayVoucherService extends UrboxService {
         dataToSign.put("site_user_id", request.getSite_user_id());
         dataToSign.put("transaction_id", request.getTransaction_id());
 
-        // Tạo chữ ký
         String signature = signatureUtil.generateSignature(dataToSign, privateKeyPath);
 
-        // Gọi API
         return callPostApi("/2.0/cart/cartPayVoucher", request, signature, CartPayVoucherM1Response.class);
     }
 
@@ -81,7 +77,6 @@ public class CartPayVoucherService extends UrboxService {
         request.setApp_secret(app_secret);
         request.setApp_id(app_id);
 
-        // Tạo dữ liệu để ký
         Map<String, Object> dataToSign = new HashMap<>();
         dataToSign.put("app_secret", request.getApp_secret());
         dataToSign.put("app_id", request.getApp_id());
@@ -91,10 +86,8 @@ public class CartPayVoucherService extends UrboxService {
         dataToSign.put("site_user_id", request.getSite_user_id());
         dataToSign.put("transaction_id", request.getTransaction_id());
 
-        // Tạo chữ ký
         String signature = signatureUtil.generateSignature(dataToSign, privateKeyPath);
 
-        // Gọi API
         return callPostApi("/2.0/cart/cartPayVoucher", request, signature, CartPayVoucherM2Response.class);
     }
 }
