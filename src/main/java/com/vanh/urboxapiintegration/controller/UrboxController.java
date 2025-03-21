@@ -18,14 +18,21 @@ public class UrboxController {
     private final GiftService giftService;
     private final GiftDetailService giftDetailService;
     private final CartPayVoucherService cartPayVoucherService;
+    private final CartListService cartListService;
 
 
-    public UrboxController(BrandService brandService, CategoryService categoryService, GiftService giftService, GiftDetailService giftDetailService, CartPayVoucherService cartPayVoucherService) {
+    public UrboxController(BrandService brandService,
+                           CategoryService categoryService,
+                           GiftService giftService,
+                           GiftDetailService giftDetailService,
+                           CartPayVoucherService cartPayVoucherService,
+                           CartListService cartListService) {
         this.brandService = brandService;
         this.categoryService = categoryService;
         this.giftService = giftService;
         this.giftDetailService = giftDetailService;
         this.cartPayVoucherService = cartPayVoucherService;
+        this.cartListService = cartListService;
     }
 
     //Lấy danh sách thương hiệu
@@ -82,5 +89,16 @@ public class UrboxController {
     public Mono<UrboxResponse<CartPayVoucherM2Response>> cartPayVoucherPhysicalMethod2(
             @Valid @RequestBody CartPayVoucherM2Request request) {
         return cartPayVoucherService.cartPayVoucherPhysicalMethod2(request);
+    }
+
+    //Tra cứu theo mã user và thời gian
+    @GetMapping("/cart/getlist")
+    public Mono<UrboxResponse<CartListResponse>> getCartList(
+            @RequestParam String site_user_id,
+            @RequestParam(required = false) String campaign_code,
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate,
+            @RequestParam(required = false) String transaction_id) {
+        return cartListService.getCartList(site_user_id, campaign_code, startDate, endDate, transaction_id);
     }
 }
