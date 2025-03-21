@@ -12,7 +12,7 @@ public class CartPayVoucherM1Response {
     private String cartCreated;
     private String linkCart;
     private String linkCombo;
-    private String linkShippingInfo;  // Có giá trị
+    private String linkShippingInfo;
     private Cart cart;
 
     @Data

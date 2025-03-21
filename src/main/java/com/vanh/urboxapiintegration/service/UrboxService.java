@@ -52,7 +52,8 @@ public class UrboxService {
                 .header("Signature", signature)
                 .bodyValue(requestBody)
                 .retrieve()
-                .bodyToMono(new ParameterizedTypeReference<UrboxResponse<R>>() {})
+                .bodyToMono(new ParameterizedTypeReference<UrboxResponse<R>>() {
+                })
                 .timeout(Duration.ofSeconds(60))
                 .onErrorResume(throwable -> Mono.just(new UrboxResponse<>()));
     }

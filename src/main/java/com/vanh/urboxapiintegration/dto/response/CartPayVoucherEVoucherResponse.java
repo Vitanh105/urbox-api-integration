@@ -12,7 +12,7 @@ public class CartPayVoucherEVoucherResponse {
     private String cart_created;
     private String linkCart;
     private String linkCombo;
-    private String linkShippingInfo;  // Sẽ là rỗng
+    private String linkShippingInfo;
     private Cart cart;
 
     @Data

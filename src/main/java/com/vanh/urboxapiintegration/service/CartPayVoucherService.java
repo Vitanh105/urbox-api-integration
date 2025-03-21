@@ -1,6 +1,5 @@
 package com.vanh.urboxapiintegration.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vanh.urboxapiintegration.dto.request.CartPayVoucherEVoucherRequest;
 import com.vanh.urboxapiintegration.dto.request.CartPayVoucherM1Request;
 import com.vanh.urboxapiintegration.dto.request.CartPayVoucherM2Request;
@@ -21,15 +20,13 @@ import java.util.Map;
 public class CartPayVoucherService extends UrboxService {
 
     private final SignatureUtil signatureUtil;
-    private final ObjectMapper objectMapper;
 
-    @Value("${private.key.path}")
+    @Value("${app.private-key}")
     private String privateKeyPath;
 
-    public CartPayVoucherService(WebClient webClient, SignatureUtil signatureUtil, ObjectMapper objectMapper) {
+    public CartPayVoucherService(WebClient webClient, SignatureUtil signatureUtil) {
         super(webClient);
         this.signatureUtil = signatureUtil;
-        this.objectMapper = objectMapper;
     }
 
     // Quà eVoucher

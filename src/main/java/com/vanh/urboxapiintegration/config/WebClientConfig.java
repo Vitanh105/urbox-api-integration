@@ -11,7 +11,8 @@ public class WebClientConfig {
     public WebClient webClient() {
         return WebClient.builder()
                 .defaultHeader("Content-Type", "application/json")
-                .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(16 * 1024 * 1024))
+                .codecs(configurer -> configurer
+                        .defaultCodecs().maxInMemorySize(16 * 1024 * 1024))
                 .build();
     }
 }
